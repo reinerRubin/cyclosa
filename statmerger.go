@@ -36,6 +36,9 @@ func mergeStat(dst io.Writer, statFilename string) error {
 	defer stat.Close()
 
 	_, err = io.Copy(dst, stat)
+	if err != nil {
+		return fmt.Errorf("cant copy stat file (%s): %s", statFilename, err)
+	}
 
 	if err := stat.Close(); err != nil {
 		return fmt.Errorf("cant close stat (%s): %s", statFilename, err)

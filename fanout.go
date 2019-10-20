@@ -39,7 +39,7 @@ func (qf *queryStatFanout) pushQuery(query query) error {
 		return nil
 	}
 
-	if !exist && qf.full() {
+	if qf.full() {
 		err := qf.flush()
 		if err != nil {
 			return fmt.Errorf("cant flush stats: %s", err)
@@ -168,9 +168,9 @@ func (qf *queryStatFanout) mergeStatFromFile(
 	ongoingStat queryStat,
 	out io.StringWriter,
 ) error {
-	scanner := bufio.NewScanner(existedStat)
-	for scanner.Scan() {
-		statLine := scanner.Text()
+	existedStatScanner := bufio.NewScanner(existedStat)
+	for existedStatScanner.Scan() {
+		statLine := existedStatScanner.Text()
 		query, quantity, err := queryStatFromString(statLine)
 		if err != nil {
 			return fmt.Errorf("cant parse stat line (%s): %s", statLine, err)
@@ -187,7 +187,7 @@ func (qf *queryStatFanout) mergeStatFromFile(
 			return fmt.Errorf("cant write stat to merge file: %s", err)
 		}
 	}
-	if err := scanner.Err(); err != nil {
+	if err := existedStatScanner.Err(); err != nil {
 		return fmt.Errorf("fail at reading: %s", err)
 	}
 

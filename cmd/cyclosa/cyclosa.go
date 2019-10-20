@@ -16,6 +16,32 @@ type args struct {
 	removeTempFiles   bool
 }
 
+func main() {
+	if err := app(); err != nil {
+		fmt.Printf("exit with err: %s\n", err)
+	}
+}
+
+func app() error {
+	args, err := parseArgs()
+	if err != nil {
+		return fmt.Errorf("cant parse args: %s", err)
+	}
+
+	err = cyclosa.Run(&cyclosa.AppSettings{
+		InputFilename:   args.inputFilename,
+		OutputFilename:  args.outputFilename,
+		KeyLimit:        uint(args.keyLimit),
+		SectorsQuantity: uint(args.tempFilesQuantity),
+		RemoveTempFiles: args.removeTempFiles,
+	})
+	if err != nil {
+		return fmt.Errorf("main process failed: %s", err)
+	}
+
+	return nil
+}
+
 func parseArgs() (*args, error) {
 	args := &args{}
 	flag.IntVar(&args.keyLimit, "keylimit", 100, "max uniq keys in memory")
@@ -41,30 +67,4 @@ func parseArgs() (*args, error) {
 	args.outputFilename = outputFilename
 
 	return args, nil
-}
-
-func app() error {
-	args, err := parseArgs()
-	if err != nil {
-		return fmt.Errorf("cant parse args: %s", err)
-	}
-
-	err = cyclosa.Run(&cyclosa.AppSettings{
-		InputFilename:   args.inputFilename,
-		OutputFilename:  args.outputFilename,
-		KeyLimit:        uint(args.keyLimit),
-		SectorsQuantity: uint(args.tempFilesQuantity),
-		RemoveTempFiles: args.removeTempFiles,
-	})
-	if err != nil {
-		return fmt.Errorf("main process failed: %s", err)
-	}
-
-	return nil
-}
-
-func main() {
-	if err := app(); err != nil {
-		fmt.Printf("exit with err: %s\n", err)
-	}
 }

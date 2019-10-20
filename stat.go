@@ -17,7 +17,7 @@ func (s querySector) String() string {
 	return fmt.Sprintf("%d", uint32(s))
 }
 
-var queryStatStringRegexp = regexp.MustCompile(`(.*)\t(\d+)`)
+var queryStatStringRegexp = regexp.MustCompile(`^(.*)\t(\d+)$`)
 
 func queryStatToString(q query, quantity uint) string {
 	return fmt.Sprintf("%s\t%d", q, quantity)
