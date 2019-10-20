@@ -19,7 +19,7 @@ type args struct {
 func parseArgs() (*args, error) {
 	args := &args{}
 	flag.IntVar(&args.keyLimit, "keylimit", 100, "max uniq keys in memory")
-	flag.IntVar(&args.tempFilesQuantity, "tempfilesquantity", 0, "how many temporary files to use")
+	flag.IntVar(&args.tempFilesQuantity, "tempfilesquantity", 10, "how many temporary files to use")
 	flag.BoolVar(&args.removeTempFiles, "removetempfiles", true, "remove temp files")
 
 	flag.Parse()

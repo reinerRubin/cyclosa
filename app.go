@@ -10,6 +10,7 @@ import (
 
 const tempDirPrefix = "cyclosa"
 
+// AppSettings TBD
 type AppSettings struct {
 	InputFilename   string
 	OutputFilename  string
@@ -18,6 +19,7 @@ type AppSettings struct {
 	RemoveTempFiles bool
 }
 
+// Run TBD
 func Run(s *AppSettings) error {
 	workdir, err := tempWorkdir()
 	if err != nil {
